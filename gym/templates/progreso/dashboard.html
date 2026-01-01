@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📈 Mi Progreso</h1>
+</div>
+
+{% if estadisticas %}
+<!-- Estadísticas Generales -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card card-dark text-center">
+            <div class="card-body">
+                <div class="display-6">{{ estadisticas.total_entrenamientos }}</div>
+                <small class="text-muted">Entrenamientos Totales</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card card-dark text-center">
+            <div class="card-body">
+                <div class="display-6">{{ estadisticas.total_series }}</div>
+                <small class="text-muted">Series Completadas</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card card-dark text-center">
+            <div class="card-body">
+                <div class="display-6">{{ estadisticas.ejercicio_frecuente }}</div>
+                <small class="text-muted">Ejercicio Favorito</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card card-dark text-center">
+            <div class="card-body">
+                <div class="display-6">{{ estadisticas.primera_fecha|date:"d/m" }}</div>
+                <small class="text-muted">Primer Entrenamiento</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PRs (Personal Records) -->
+{% if prs %}
+<div class="card card-dark mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">🏆 Mis Récords Personales (PRs)</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            {% for pr in prs|slice:":6" %}
+            <div class="col-md-4 mb-3">
+                <div class="card card-dark h-100">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ pr.ejercicio }}</h6>
+                        <div class="display-6 text-primary">{{ pr.peso }}kg</div>
+                        <p class="text-muted mb-1">{{ pr.reps }} repeticiones</p>
+                        <small class="text-muted">{{ pr.fecha|date:"d M Y" }}</small>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'progreso_ejercicio' pr.ejercicio_id %}" class="btn btn-outline-light btn-sm">
+                            📊 Ver Progreso
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Gráfico de Volumen (Simple) -->
+{% if datos_grafico %}
+<div class="card card-dark mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">📊 Volumen de Entrenamientos Recientes</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Rutina</th>
+                        <th>Volumen Total (kg)</th>
+                        <th>Progreso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dato in datos_grafico %}
+                    <tr>
+                        <td>{{ dato.fecha }}</td>
+                        <td>{{ dato.nombre }}</td>
+                        <td>{{ dato.volumen|floatformat:0 }}</td>
+                        <td>
+                            {% if not forloop.first %}
+                                {% with prev=datos_grafico|slice:forloop.counter0|first %}
+                                    {% if dato.volumen > prev.volumen %}
+                                        <span class="text-success">↗️ +{{ dato.volumen|floatformat:0|add:prev.volumen|floatformat:0 }}</span>
+                                    {% elif dato.volumen < prev.volumen %}
+                                        <span class="text-danger">↘️ {{ dato.volumen|floatformat:0|add:prev.volumen|floatformat:0 }}</span>
+                                    {% else %}
+                                        <span class="text-muted">➡️ Igual</span>
+                                    {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                <span class="text-muted">Primer registro</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Últimos Entrenamientos -->
+<div class="card card-dark">
+    <div class="card-header">
+        <h5 class="mb-0">📋 Entrenamientos Recientes</h5>
+    </div>
+    <div class="card-body">
+        {% if ultimos_entrenamientos %}
+        <div class="row">
+            {% for entrenamiento in ultimos_entrenamientos %}
+            <div class="col-md-6 mb-3">
+                <div class="card card-dark">
+                    <div class="card-body">
+                        <h6>{{ entrenamiento.rutina.nombre }}</h6>
+                        <p class="text-muted mb-2">{{ entrenamiento.fecha|date:"d M Y - H:i" }}</p>
+                        <small>Duración: {{ entrenamiento.duracion_minutos }} minutos</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-muted py-3">Aún no hay entrenamientos registrados</p>
+        {% endif %}
+    </div>
+</div>
+
+{% else %}
+<!-- Mensaje si no hay datos -->
+<div class="card card-dark text-center py-5">
+    <div class="card-body">
+        <h4>📈 Aún no hay datos de progreso</h4>
+        <p class="text-muted">Comienza a entrenar para ver tus estadísticas y gráficos</p>
+        <a href="{% url 'lista_rutinas' %}" class="btn btn-primary">
+            🏋️‍♂️ Comenzar a Entrenar
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-dark">
+            <div class="card-body p-4 text-center">
+                
+                <!-- Información del entrenamiento -->
+                <div class="mb-4">
+                    <h4>🏋️‍♂️ Entrenando: {{ entrenamiento.rutina.nombre }}</h4>
+                    <p class="text-muted">
+                        {{ entrenamiento.fecha|date:"d M Y - H:i" }}
+                    </p>
+                </div>
+                
+                <!-- Ejercicio actual -->
+                <div class="card card-dark mb-4">
+                    <div class="card-body">
+                        <h3 class="text-primary">{{ ejercicio_actual.ejercicio.nombre }}</h3>
+                        
+                        <div class="row mt-4 text-center">
+                            <div class="col-4">
+                                <div class="display-6">{{ ejercicio_actual.series }}</div>
+                                <small class="text-muted">Series totales</small>
+                            </div>
+                            <div class="col-4">
+                                <div class="display-6">{{ ejercicio_actual.repeticiones }}</div>
+                                <small class="text-muted">Reps objetivo</small>
+                            </div>
+                            <div class="col-4">
+                                <div class="display-6">{{ ejercicio_actual.descanso }}</div>
+                                <small class="text-muted">Descanso (min)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progreso actual -->
+                <div class="mb-4">
+                    <h5>Serie {{ numero_serie }} de {{ ejercicio_actual.series }}</h5>
+                    
+                    <!-- Progreso simple sin cálculos complejos -->
+                    <div class="alert alert-dark">
+                        <div class="d-flex justify-content-between">
+                            <span>Progreso:</span>
+                            <span class="fw-bold">{{ series_completadas }}/{{ ejercicio_actual.series }} series</span>
+                        </div>
+                        <small class="text-muted">Serie actual: {{ numero_serie }}</small>
+                    </div>
+                </div>
+                
+                <!-- Formulario para registrar la serie -->
+                <form method="POST" class="mt-4">
+                    {% csrf_token %}
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label">Peso (kg)</label>
+                            <input type="number" 
+                                   name="peso" 
+                                   class="form-control form-control-lg text-center dark-input"
+                                   step="0.5"
+                                   min="0"
+                                   required
+                                   autofocus>
+                        </div>
+                        
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label">Repeticiones</label>
+                            <input type="number" 
+                                   name="repeticiones" 
+                                   class="form-control form-control-lg text-center dark-input"
+                                   min="1"
+                                   max="50"
+                                   required>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+                            💾 Registrar Serie {{ numero_serie }}
+                        </button>
+                        
+                        <a href="{% url 'finalizar_entrenamiento' entrenamiento.id %}" 
+                           class="btn btn-outline-danger mt-2"
+                           onclick="return confirm('¿Terminar entrenamiento ahora?')">
+                            🏁 Terminar Entrenamiento
+                        </a>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>{{ rutina.nombre }}</h1>
+        {% if rutina.descripcion %}
+        <p class="text-muted">{{ rutina.descripcion }}</p>
+        {% endif %}
+    </div>
+    <div>
+        <!-- NUEVO BOTÓN PARA INICIAR ENTRENAMIENTO -->
+        <a href="{% url 'iniciar_entrenamiento' rutina.id %}" class="btn btn-success">
+            🏋️‍♂️ Iniciar Entrenamiento
+        </a>
+        <a href="{% url 'agregar_ejercicio_rutina' rutina.id %}" class="btn btn-primary">
+            ➕ Agregar Ejercicio
+        </a>
+        <a href="{% url 'lista_rutinas' %}" class="btn btn-outline-secondary">
+            ↩️ Volver
+        </a>
+    </div>
+</div>
+
+<!-- Mensajes -->
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+{% if ejercicios %}
+<div class="card card-dark">
+    <div class="card-header">
+        <h5 class="mb-0">📋 Ejercicios de la Rutina</h5>
+    </div>
+    <div class="card-body">
+        {% for ejercicio_rutina in ejercicios %}
+        <div class="card card-dark mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="card-title">{{ ejercicio_rutina.ejercicio.nombre }}</h6>
+                        <small class="text-muted">
+                            Grupo: {{ ejercicio_rutina.ejercicio.get_grupo_muscular_display }}
+                        </small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <small class="text-muted">Series</small>
+                                <div class="fw-bold">{{ ejercicio_rutina.series }}</div>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">Reps</small>
+                                <div class="fw-bold">{{ ejercicio_rutina.repeticiones }}</div>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">Descanso</small>
+                                <div class="fw-bold">{{ ejercicio_rutina.descanso }}min</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Orden: {{ ejercicio_rutina.orden }}</small>
+                <div class="float-end">
+                    <a href="#" class="btn btn-outline-warning btn-sm">✏️ Editar</a>
+                    <a href="#" class="btn btn-outline-danger btn-sm">🗑️ Eliminar</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="card card-dark text-center py-5">
+    <div class="card-body">
+        <h4>💪 Aún no hay ejercicios</h4>
+        <p class="text-muted">Agrega ejercicios para comenzar con esta rutina</p>
+        <a href="{% url 'agregar_ejercicio_rutina' rutina.id %}" class="btn btn-primary">
+            Agregar Primer Ejercicio
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+# Entorno Virtual de Python
+env/
+VENV/
+ENV/
+
+# Archivos de Bases de Datos SQLite
+*.sqlite3
+*.db
+
+# Archivos de Python Cache
+__pycache__/
+*.py[cod]
+
+# Archivos de Configuracion con Secretos
+*.env
+secrets,json
+config.py
+
+# Django
+*.log
+staticfiles/
+media/
+

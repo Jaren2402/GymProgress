@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-3">Dashboard</h1>
+        <p class="text-muted">Bienvenido, {{ user.username }}! 🎉</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card card-dark">
+            <div class="card-body">
+                <h5 class="card-title">📈 Tu Progreso</h5>
+                <p class="card-text text-muted">Aquí verás tus estadísticas y gráficos de progreso.</p>
+                <div class="text-center py-3">
+                    <span class="text-muted">Próximamente...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card card-dark">
+            <div class="card-body">
+                <h5 class="card-title">💪 Último Entrenamiento</h5>
+                <p class="card-text text-muted">Registra y revisa tus sesiones de entrenamiento.</p>
+                <div class="text-center py-3">
+                    <span class="text-muted">Próximamente...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

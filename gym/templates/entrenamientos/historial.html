@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📋 Historial de Entrenamientos</h1>
+    <a href="{% url 'lista_rutinas' %}" class="btn btn-outline-secondary">
+        ↩️ Volver a Rutinas
+    </a>
+</div>
+
+{% if entrenamientos %}
+<div class="row">
+    {% for entrenamiento in entrenamientos %}
+    <div class="col-md-6 mb-4">
+        <div class="card card-dark h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ entrenamiento.rutina.nombre }}</h5>
+                <p class="card-text text-muted">
+                    {{ entrenamiento.fecha|date:"d M Y - H:i" }}
+                </p>
+                <p class="card-text">
+                    <small>Duración: {{ entrenamiento.duracion_minutos }} minutos</small>
+                </p>
+                {% if entrenamiento.notas %}
+                <p class="card-text">
+                    <small>{{ entrenamiento.notas }}</small>
+                </p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-outline-light btn-sm">
+                    👀 Ver Detalles
+                </a>
+                <a href="#" class="btn btn-outline-warning btn-sm">
+                    📝 Agregar Notas
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card card-dark text-center py-5">
+    <div class="card-body">
+        <h4>📝 Aún no hay entrenamientos</h4>
+        <p class="text-muted">Comienza un entrenamiento para ver tu historial aquí</p>
+        <a href="{% url 'lista_rutinas' %}" class="btn btn-primary">
+            🏋️‍♂️ Comenzar Entrenamiento
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

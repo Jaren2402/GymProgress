@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-dark">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">
+                    Agregar Ejercicio a: {{ rutina.nombre }}
+                </h2>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <!-- Campo Ejercicio -->
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.ejercicio.label }}</label>
+                        {{ form.ejercicio }}
+                        {% if form.ejercicio.errors %}
+                        <div class="text-danger">
+                            {{ form.ejercicio.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo Series -->
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.series.label }}</label>
+                        {{ form.series }}
+                        {% if form.series.errors %}
+                        <div class="text-danger">
+                            {{ form.series.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo Repeticiones -->
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.repeticiones.label }}</label>
+                        {{ form.repeticiones }}
+                        <div class="form-text">Ejemplos: 8-12, 12-15, 5-8, 15-20</div>
+                        {% if form.repeticiones.errors %}
+                        <div class="text-danger">
+                            {{ form.repeticiones.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo Descanso -->
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.descanso.label }}</label>
+                        {{ form.descanso }}
+                        <div class="form-text">Tiempo en minutos entre series (ej: 1.5 = 1 minuto 30 segundos)</div>
+                        {% if form.descanso.errors %}
+                        <div class="text-danger">
+                            {{ form.descanso.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo Orden -->
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.orden.label }}</label>
+                        {{ form.orden }}
+                        <div class="form-text">En qué orden se realiza este ejercicio (0 = primero)</div>
+                        {% if form.orden.errors %}
+                        <div class="text-danger">
+                            {{ form.orden.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            💾 Agregar Ejercicio
+                        </button>
+                        <a href="{% url 'detalle_rutina' rutina.id %}" class="btn btn-outline-secondary">
+                            ↩️ Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

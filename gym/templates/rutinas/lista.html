@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Mis Rutinas</h1>
+    <a href="{% url 'crear_rutina' %}" class="btn btn-primary">
+        ➕ Nueva Rutina
+    </a>
+</div>
+
+<!-- Mensajes -->
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+{% if rutinas %}
+    <div class="row">
+        {% for rutina in rutinas %}
+        <div class="col-md-6 mb-4">
+            <div class="card card-dark h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ rutina.nombre }}</h5>
+                    <p class="card-text text-muted">
+                        {{ rutina.descripcion|default:"Sin descripción" }}
+                    </p>
+                    <small class="text-muted">
+                        Creada: {{ rutina.fecha_creacion|date:"d M Y" }}
+                    </small>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'detalle_rutina' rutina.id %}" class="btn btn-outline-light btn-sm">
+                        👀 Ver Ejercicios
+                    </a>
+                    <a href="{% url 'editar_rutina' rutina.id %}" class="btn btn-outline-warning btn-sm">
+                        ✏️ Editar
+                    </a>
+                    <a href="{% url 'eliminar_rutina' rutina.id %}" class="btn btn-outline-danger btn-sm"
+                       onclick="return confirm('¿Estás seguro de eliminar esta rutina?')">
+                        🗑️ Eliminar
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card card-dark text-center py-5">
+        <div class="card-body">
+            <h4>📝 Aún no tienes rutinas</h4>
+            <p class="text-muted">Crea tu primera rutina para comenzar</p>
+            <a href="{% url 'crear_rutina' %}" class="btn btn-primary">
+                Crear Mi Primera Rutina
+            </a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

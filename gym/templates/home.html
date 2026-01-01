@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section Mejorada -->
+<div class="row align-items-center mb-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold mb-3">🏋️‍♂️ GymProgress</h1>
+        <p class="lead text-muted mb-4">
+            Tu compañero inteligente para trackear progreso en el gimnasio. 
+            Registra, analiza y mejora con datos reales.
+        </p>
+        
+        {% if user.is_authenticated %}
+        <div class="d-flex flex-wrap gap-3">
+            <a href="{% url 'lista_rutinas' %}" class="btn btn-primary btn-lg">
+                📋 Mis Rutinas
+            </a>
+            <a href="{% url 'progreso_dashboard' %}" class="btn btn-outline-light btn-lg">
+                📈 Ver Mi Progreso
+            </a>
+        </div>
+        {% else %}
+        <div class="d-flex flex-wrap gap-3">
+            <a href="{% url 'registro' %}" class="btn btn-primary btn-lg">
+                🚀 Comenzar Gratis
+            </a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                🔐 Iniciar Sesión
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-md-6 text-center">
+        <div class="card card-dark p-4">
+            <div class="display-1 mb-3">📊</div>
+            <h4>Progreso Basado en Datos</h4>
+            <p class="text-muted">No más conjeturas. Sabe exactamente cómo vas.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Features -->
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card card-dark h-100">
+            <div class="card-body text-center">
+                <div class="display-4 mb-3">📝</div>
+                <h5>Registro Inteligente</h5>
+                <p class="text-muted">
+                    Registra series, peso y repeticiones en tiempo real durante tu entrenamiento.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card card-dark h-100">
+            <div class="card-body text-center">
+                <div class="display-4 mb-3">📈</div>
+                <h5>Análisis Automático</h5>
+                <p class="text-muted">
+                    Compara automáticamente con entrenamientos anteriores y detecta tu progreso.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card card-dark h-100">
+            <div class="card-body text-center">
+                <div class="display-4 mb-3">🏆</div>
+                <h5>PRs y Logros</h5>
+                <p class="text-muted">
+                    Detecta automáticamente tus nuevos récords personales y celebra tus logros.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Para usuarios logueados: Acciones rápidas -->
+{% if user.is_authenticated %}
+<div class="card card-dark mt-5">
+    <div class="card-body">
+        <h4 class="mb-4">⚡ Acciones Rápidas</h4>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <a href="{% url 'lista_rutinas' %}" class="btn btn-outline-light w-100 py-3">
+                    <div class="fs-1">📋</div>
+                    Gestionar Rutinas
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="{% url 'historial_entrenamientos' %}" class="btn btn-outline-light w-100 py-3">
+                    <div class="fs-1">📊</div>
+                    Ver Historial
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="{% url 'progreso_dashboard' %}" class="btn btn-outline-light w-100 py-3">
+                    <div class="fs-1">📈</div>
+                    Ver Progreso
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
