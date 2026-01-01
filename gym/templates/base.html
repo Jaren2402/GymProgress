@@ -209,6 +209,66 @@
         }
         }
     </style>
+
+    <style>
+        /* ============================================
+           FIX PARA SIDEBAR EN MÓVILES VERTICALES
+           ============================================ */
+        
+        /* Solo en móviles verticales (pantallas angostas) */
+        @media (max-width: 576px) {
+            /* Sidebar un poco más angosto */
+            #sidebar {
+                min-width: 95px !important;
+                max-width: 100px !important;
+            }
+
+            .sidebar-nav a span {
+                display: block !important;
+            }
+            
+            /* Cada opción del menú: icono arriba, texto abajo */
+            #sidebar .nav-link {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                padding: 8px 3px !important;
+                margin: 4px 0 !important;
+                min-height: 65px !important;
+            }
+            
+            /* Iconos más grandes */
+            #sidebar .nav-link i {
+                font-size: 1.3rem !important;
+                margin-bottom: 6px !important;
+                display: block !important;
+            }
+            
+            /* Texto pequeño pero completo */
+            #sidebar .nav-link {
+                font-size: 0.7rem !important;
+                line-height: 1.1 !important;
+            }
+            
+            /* Asegurar que las palabras no se corten */
+            #sidebar .nav-item {
+                word-break: break-word !important;
+                hyphens: auto !important;
+            }
+        }
+        
+        /* Para móviles horizontales (más espacio) */
+        @media (min-width: 577px) and (max-width: 768px) {
+            #sidebar {
+                min-width: 120px !important;
+            }
+            #sidebar .nav-link {
+                font-size: 0.85rem !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Sidebar -->
