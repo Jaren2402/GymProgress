@@ -1,11 +1,10 @@
 from django.urls import path
-from.views import home, registro, login_view, logout_view, dashboard, lista_rutinas, crear_rutina, editar_rutina, eliminar_rutina, detalle_rutina, agregar_ejercicio_rutina, iniciar_entrenamiento, registrar_serie, finalizar_entrenamiento, historial_entrenamientos, progreso_dashboard, progreso_ejercicio
-
+from.views import home, registro, login_view, logout_view, dashboard, lista_rutinas, crear_rutina, editar_rutina, eliminar_rutina, detalle_rutina, agregar_ejercicio_rutina, iniciar_entrenamiento, registrar_serie, finalizar_entrenamiento, historial_entrenamientos, progreso_dashboard, progreso_ejercicio, actualizar_peso
 urlpatterns = [
     path('', home, name='home'),
     path('registro/', registro, name='registro'),
     path('login/', login_view, name='login'),
-    path('login/', logout_view, name='logout'),
+    path('logout/', logout_view, name='logout'),
     path('rutinas/', lista_rutinas, name='lista_rutinas'),
     path('rutinas/crear', crear_rutina, name='crear_rutina'),
     path('rutinas/editar/<int:rutina_id>/', editar_rutina, name='editar_rutina'),
@@ -18,8 +17,5 @@ urlpatterns = [
     path('entrenamientos/historial/', historial_entrenamientos, name='historial_entrenamientos'),
     path('progreso/', progreso_dashboard, name='progreso_dashboard'),
     path('progreso/ejercicio/<int:ejercicio_id>/', progreso_ejercicio, name='progreso_ejercicio'),
+    path('actualizar-peso/', actualizar_peso, name='actualizar_peso'),
 ]
-
-
-
-
