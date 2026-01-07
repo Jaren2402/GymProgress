@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from.models import Rutina, Ejercicio, EjercicioRutina, Entrenamiento, SerieEjercicio
+from.models import Rutina, Ejercicio, EjercicioRutina, Entrenamiento, SerieEjercicio, Perfil
 from.forms import RutinaForm, EjercicioRutinaForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -60,6 +60,9 @@ def logout_view(request):
 # DASHBOARD - Solo para usuarios logueados
 @login_required
 def dashboard(request):
+    """Redirige a la página principal (home)"""
+    from django.shortcuts import redirect
+    return redirect('home')
     return render(request, 'dashboard.html')
 
 # 📊 VIEW: Lista de rutinas del usuario
@@ -276,6 +279,7 @@ def registrar_serie(request, entrenamiento_id):
     if request.method == 'POST':
         peso = float(request.POST.get('peso', 0))
         repeticiones = int(request.POST.get('repeticiones', 0))
+        rpe = int(request.POST.get("rpe", 7))  # Default 7 si no se especifica
         
         # Crear registro de la serie
         SerieEjercicio.objects.create(
@@ -283,7 +287,8 @@ def registrar_serie(request, entrenamiento_id):
             ejercicio_rutina=ejercicio_actual,
             numero_serie=numero_serie,
             peso_kg=peso,
-            repeticiones=repeticiones
+            repeticiones=repeticiones,
+            rpe=rpe,
         )
         
         # Redirigir a la misma página para la siguiente serie
@@ -409,6 +414,33 @@ def encontrar_prs(usuario):
                 'ejercicio_id': ejercicio.id
             })
     
+    
+    # Calcular relación peso corporal para cada PR
+    try:
+        perfil = Perfil.objects.get(usuario=usuario)
+        peso_corporal = perfil.peso_corporal
+        if peso_corporal and peso_corporal > 0:
+            for pr in prs:
+                relacion = pr['peso'] / peso_corporal
+                pr['relacion_peso'] = round(relacion, 2)
+                
+                # Determinar nivel basado en relación
+                if relacion < 0.75:
+                    pr['nivel'] = 'Principiante'
+                elif relacion < 1.0:
+                    pr['nivel'] = 'Intermedio'
+                elif relacion < 1.25:
+                    pr['nivel'] = 'Avanzado'
+                else:
+                    pr['nivel'] = 'Élite'
+        else:
+            for pr in prs:
+                pr['relacion_peso'] = None
+                pr['nivel'] = 'Sin peso'
+    except Perfil.DoesNotExist:
+        for pr in prs:
+            pr['relacion_peso'] = None
+            pr['nivel'] = 'Sin peso'
     return prs
 
 # 📝 EXPLICACIÓN: Calcula estadísticas generales del usuario
@@ -506,3 +538,15 @@ def progreso_ejercicio(request, ejercicio_id):
         'historial': historial,
         'datos_grafico': datos_grafico
     })
+
+@login_required
+def actualizar_peso(request):
+    """Actualiza el peso corporal desde el Dashboard"""
+    if request.method == 'POST':
+        peso = request.POST.get('peso_corporal')
+        if peso:
+            perfil, created = Perfil.objects.get_or_create(usuario=request.user)
+            perfil.peso_corporal = float(peso)
+            perfil.save()
+            messages.success(request, f'¡Peso actualizado a {peso}kg!')
+    return redirect('home')

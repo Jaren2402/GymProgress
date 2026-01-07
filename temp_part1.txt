@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section Mejorada -->
+<div class="row align-items-center mb-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold mb-3">🏋️‍♂️ GymProgress</h1>
+        <p class="lead text-muted mb-4">
+            Tu compañero inteligente para trackear progreso en el gimnasio. 
+            Registra, analiza y mejora con datos reales.
+        </p>
+        
+        {% if user.is_authenticated %}
+<div class="alert alert-dark mb-4">
+    <form method="POST" action="/actualizar-peso/" class="d-flex align-items-center">

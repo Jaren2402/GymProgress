@@ -59,7 +59,19 @@
                     <div class="card-body">
                         <h6 class="card-title">{{ pr.ejercicio }}</h6>
                         <div class="display-6 text-primary">{{ pr.peso }}kg</div>
-                        <p class="text-muted mb-1">{{ pr.reps }} repeticiones</p>
+                        
+                        {% if pr.relacion_peso %}
+                        <div class="mt-2">
+                            <span class="badge {% if pr.nivel == 'Principiante' %}bg-secondary{% elif pr.nivel == 'Intermedio' %}bg-info{% elif pr.nivel == 'Avanzado' %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ pr.relacion_peso }}x tu peso
+                            </span>
+                            <small class="d-block text-muted mt-1">Nivel {{ pr.nivel }}</small>
+                        </div>
+                        {% else %}
+                        <small class="text-muted">Pon tu peso en el inicio para ver fuerza relativa</small>
+                        {% endif %}
+                        
+                        <p class="text-muted mb-1 mt-2">{{ pr.reps }} repeticiones</p>
                         <small class="text-muted">{{ pr.fecha|date:"d M Y" }}</small>
                     </div>
                     <div class="card-footer">

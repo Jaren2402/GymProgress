@@ -90,25 +90,6 @@ class SerieEjercicio(models.Model):
     numero_serie = models.IntegerField()  # Serie 1, 2, 3...
     peso_kg = models.FloatField()         # Peso utilizado
     repeticiones = models.IntegerField()  # Reps realizadas
-    rpe = models.IntegerField(
-        null=True,
-        blank=True,
-        choices=[(i, str(i)) for i in range(1, 11)],
-        verbose_name="RPE (1=fácil, 10=fallo)"
-    )
     
     class Meta:
         ordering = ['ejercicio_rutina__orden', 'numero_serie']
-
-class Perfil(models.Model):
-    """Peso corporal del usuario para cálculos de fuerza"""
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
-    peso_corporal = models.FloatField(
-        null=True,
-        blank=True,
-        verbose_name='Peso (kg)',
-        help_text='Tu peso actual en kilogramos'
-    )
-    
-    def __str__(self):
-        return f'{self.usuario.username}: {self.peso_corporal or "Sin peso"}kg'

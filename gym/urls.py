@@ -6,7 +6,6 @@ urlpatterns = [
     path('registro/', registro, name='registro'),
     path('login/', login_view, name='login'),
     path('login/', logout_view, name='logout'),
-    path('dashboard/', dashboard, name='dashboard'),
     path('rutinas/', lista_rutinas, name='lista_rutinas'),
     path('rutinas/crear', crear_rutina, name='crear_rutina'),
     path('rutinas/editar/<int:rutina_id>/', editar_rutina, name='editar_rutina'),

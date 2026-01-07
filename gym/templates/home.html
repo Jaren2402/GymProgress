@@ -11,6 +11,15 @@
         </p>
         
         {% if user.is_authenticated %}
+<div style="background:#2a2a2a; padding:10px; margin-bottom:15px; border-radius:5px;">
+<form method="POST" action="/actualizar-peso/">
+{% csrf_token %}
+<strong>⚖️ Mi peso:</strong>
+<input type="number" name="peso_corporal" step="0.1" value="{{ user.perfil.peso_corporal|default:'' }}">
+<button type="submit">Guardar</button>
+</form>
+<small style="color:#888;">Para calcular fuerza relativa</small>
+</div>
         <div class="d-flex flex-wrap gap-3">
             <a href="{% url 'lista_rutinas' %}" class="btn btn-primary btn-lg">
                 📋 Mis Rutinas

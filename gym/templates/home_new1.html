@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="alert alert-dark mb-4">
+    <form method="POST" action="/actualizar-peso/">
+        {% csrf_token %}
+        <strong>⚖️ Mi peso:</strong>
+        <input type="number" name="peso_corporal" step="0.1" value="{{ user.perfil.peso_corporal|default: }}" placeholder="75.5">
+        <span>kg</span>
+        <button type="submit">Guardar</button>
+    </form>
+    <small>Para calcular cuántas veces tu peso levantas</small>
+</div>
+{% endif %}
