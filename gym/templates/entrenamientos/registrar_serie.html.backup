@@ -67,14 +67,14 @@
                             {% if sugerencia_peso %}
                             <div class="alert alert-info mt-2 p-2">
                                 <small>
-                                    💡 <strong>Sugerencia basada en tu último RPE</strong><br>
-                                    <strong>Prueba: {{ sugerencia_peso }}kg</strong><br>
-                                    <em>Basado en tu esfuerzo anterior</em>
+                                    💡 <strong>Sugerencia RPE:</strong><br>
+                                    Última vez: {{ ultimo_peso|default:"-" }}kg @ RPE {{ ultimo_rpe|default:"-" }}<br>
+                                    <strong>Prueba: {{ sugerencia_peso }}kg</strong>
                                 </small>
                             </div>
                             {% else %}
                             <div class="alert alert-dark mt-2 p-2">
-                                <small>💡 Registra RPE (1-10) para obtener sugerencias automáticas</small>
+                                <small>💡 Registra RPE para obtener sugerencias automáticas</small>
                             </div>
                             {% endif %}
                         </div>

@@ -295,12 +295,20 @@ def registrar_serie(request, entrenamiento_id):
         return redirect('registrar_serie', entrenamiento_id=entrenamiento.id)
     
     # Contexto para el template
+    # Calcular sugerencia simple
+    sugerencia_peso = None
+    if ejercicio_actual:
+        sugerencia_peso = calcular_sugerencia_simple(
+            request.user, 
+            ejercicio_actual.ejercicio.id
+        )
     return render(request, 'entrenamientos/registrar_serie.html', {
         'entrenamiento': entrenamiento,
         'ejercicio_actual': ejercicio_actual,
         'numero_serie': numero_serie,
         'series_completadas': numero_serie - 1,
-        'total_series': ejercicio_actual.series
+        'total_series': ejercicio_actual.series,
+        "sugerencia_peso": sugerencia_peso
     })
     
 # 📝 EXPLICACIÓN: Muestra resumen del entrenamiento completado
@@ -550,3 +558,27 @@ def actualizar_peso(request):
             perfil.save()
             messages.success(request, f'¡Peso actualizado a {peso}kg!')
     return redirect('home')
+
+
+def calcular_sugerencia_simple(usuario, ejercicio_id):
+    """Calcula peso sugerido basado en último RPE - VERSIÓN SIMPLE"""
+    try:
+        from .models import SerieEjercicio
+        ultima = SerieEjercicio.objects.filter(
+            ejercicio_rutina__ejercicio_id=ejercicio_id,
+            entrenamiento__usuario=usuario,
+            rpe__isnull=False
+        ).order_by('-entrenamiento__fecha').first()
+        
+        if ultima and ultima.rpe:
+            if ultima.rpe <= 7:
+                return round(ultima.peso_kg * 1.05, 1)
+            elif ultima.rpe <= 8:
+                return round(ultima.peso_kg * 1.025, 1)
+            elif ultima.rpe == 9:
+                return ultima.peso_kg
+            else:  # RPE 10
+                return round(ultima.peso_kg * 0.975, 1)
+    except:
+        pass
+    return None
