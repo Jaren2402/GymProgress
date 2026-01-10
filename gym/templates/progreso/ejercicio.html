@@ -30,18 +30,21 @@
     <div class="col-md-3 mb-3">
         <div class="card card-dark text-center">
             <div class="card-body">
-                {% with primero=historial|first ultimo=historial|last %}
-                {% if ultimo.peso_maximo > primero.peso_maximo %}
-                <div class="display-6 text-success">+{{ ultimo.peso_maximo|floatformat:1|add:primero.peso_maximo|floatformat:1 }}kg</div>
+                {% if fuerza_relativa %}
+                    <div class="display-6">{{ fuerza_relativa }}x</div>
+                    <small class="text-muted">Tu peso</small>
+                    <div class="mt-1">
+                        <span class="badge {% if fuerza_relativa < 0.75 %}bg-secondary{% elif fuerza_relativa < 1.0 %}bg-info{% elif fuerza_relativa < 1.25 %}bg-warning{% else %}bg-danger{% endif %}">
+                            {% if fuerza_relativa < 0.75 %}Principiante{% elif fuerza_relativa < 1.0 %}Intermedio{% elif fuerza_relativa < 1.25 %}Avanzado{% else %}Élite{% endif %}
+                        </span>
+                    </div>
                 {% else %}
-                <div class="display-6">{{ ultimo.peso_maximo|floatformat:1|add:primero.peso_maximo|floatformat:1 }}kg</div>
+                    <div class="display-6">-</div>
+                    <small class="text-muted">Añade tu peso</small>
                 {% endif %}
-                {% endwith %}
-                <small class="text-muted">Progreso total</small>
             </div>
         </div>
     </div>
-    
     <div class="col-md-3 mb-3">
         <div class="card card-dark text-center">
             <div class="card-body">

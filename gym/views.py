@@ -541,11 +541,19 @@ def progreso_ejercicio(request, ejercicio_id):
                 'volumen': punto['volumen_total']
             })
     
+    # Calcular fuerza relativa simple
+    fuerza_relativa = None
+    try:
+        perfil = Perfil.objects.get(usuario=request.user)
+        if perfil.peso_corporal and perfil.peso_corporal > 0 and historial:
+            ultimo_peso = historial[-1]['peso_maximo']
+            fuerza_relativa = round(ultimo_peso / perfil.peso_corporal, 2)
+    except:
+        pass
     return render(request, 'progreso/ejercicio.html', {
         'ejercicio': ejercicio,
         'historial': historial,
-        'datos_grafico': datos_grafico
-    })
+        'datos_grafico': datos_grafico,        'fuerza_relativa': fuerza_relativa    })
 
 @login_required
 def actualizar_peso(request):

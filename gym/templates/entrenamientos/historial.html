@@ -28,12 +28,12 @@
                 {% endif %}
             </div>
             <div class="card-footer">
-                <a href="#" class="btn btn-outline-light btn-sm">
+                <a href="{% url 'finalizar_entrenamiento' entrenamiento.id %}" class="btn btn-outline-light btn-sm">
                     👀 Ver Detalles
                 </a>
-                <a href="#" class="btn btn-outline-warning btn-sm">
+                <button class="btn btn-outline-warning btn-sm" disabled title="Próximamente">
                     📝 Agregar Notas
-                </a>
+                </button>
             </div>
         </div>
     </div>
